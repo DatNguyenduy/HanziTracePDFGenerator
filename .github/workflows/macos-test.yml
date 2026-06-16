@@ -30,7 +30,7 @@ jobs:
           pyinstaller \
             --windowed \
             --name HanziTracePDFGenerator \
-            main.py
+            run.py
 
       - name: Upload App
         uses: actions/upload-artifact@v4
