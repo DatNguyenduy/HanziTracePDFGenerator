@@ -1,0 +1,29 @@
+name: macOS Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Test imports
+        run: |
+          python -c "from PySide6.QtWidgets import QApplication"
+          python -c "from reportlab.pdfgen import canvas"
+          python -c "from pypinyin import pinyin"
+          echo 'All imports successful'
