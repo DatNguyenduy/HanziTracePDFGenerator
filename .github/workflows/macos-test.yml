@@ -1,10 +1,10 @@
-name: macOS Test
+name: Build macOS App
 
 on:
   workflow_dispatch:
 
 jobs:
-  test:
+  build:
     runs-on: macos-latest
 
     steps:
@@ -21,9 +21,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Test imports
+      - name: Install PyInstaller
         run: |
-          python -c "from PySide6.QtWidgets import QApplication"
-          python -c "from reportlab.pdfgen import canvas"
-          python -c "from pypinyin import pinyin"
-          echo 'All imports successful'
+          pip install pyinstaller
+
+      - name: Build macOS App
+        run: |
+          pyinstaller \
+            --windowed \
+            --name HanziTracePDFGenerator \
+            main.py
+
+      - name: Upload App
+        uses: actions/upload-artifact@v4
+        with:
+          name: HanziTracePDFGenerator-macOS
+          path: dist/
